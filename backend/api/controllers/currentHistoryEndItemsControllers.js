@@ -1,11 +1,9 @@
 const currentHistoryServices = require('../services/currentHistoryServices');
-const archivedHistoryModels = require('../models/archivedHistoryModels');
+const archivedHistoryServices = require('../services/archivedHistoryServices');
 
-exports.getCurrentHistory = async (req, res) => {
+exports.getAll = async (req, res) => {
   try {
-    const { query } = req;
-    const data = await currentHistoryServices.getCurrentHistory(query);
-
+    const data = await currentHistoryServices.getCurrentHistory(req.query);
     res.status(200).json({ currentHistory: data });
   } catch (err) {
     res
@@ -14,13 +12,12 @@ exports.getCurrentHistory = async (req, res) => {
   }
 };
 
-exports.getCurrentHistoryById = async (req, res) => {
+exports.getById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const currentHistory =
-      await currentHistoryServices.getCurrentHistoryById(id);
-
-    res.status(200).json({ currentHistory: currentHistory });
+    const currentHistory = await currentHistoryServices.getCurrentHistoryById(
+      req.params.id,
+    );
+    res.status(200).json({ currentHistory });
   } catch (err) {
     res
       .status(err.status || 500)
@@ -28,15 +25,15 @@ exports.getCurrentHistoryById = async (req, res) => {
   }
 };
 
-exports.createCurrentHistory = async (req, res) => {
+exports.create = async (req, res) => {
   try {
-    const { query } = req;
-    const [data] = await currentHistoryServices.getCurrentHistory(query);
-    console.log(data);
+    const existing = await currentHistoryServices.getCurrentHistoryBySn({
+      serial_number: req.body.serial_number,
+    });
 
-    if (data) {
-      await archivedHistoryModels.createArchivedHistory(data);
-      await currentHistoryServices.deleteCurrentHistory(data.id);
+    if (existing) {
+      await archivedHistoryServices.createArchivedHistory(existing);
+      await currentHistoryServices.deleteCurrentHistory(existing.id);
     }
 
     const newCurrentHistory = await currentHistoryServices.createCurrentHistory(
@@ -44,43 +41,46 @@ exports.createCurrentHistory = async (req, res) => {
     );
 
     res.status(201).json({
-      newCurrentHistory: newCurrentHistory,
+      newCurrentHistory,
       message: `ID: ${newCurrentHistory.id} has been successfully created.`,
     });
   } catch (err) {
-    console.log(err);
     res
       .status(err.status || 500)
       .json({ message: err.message || 'Internal server error.' });
   }
 };
 
-exports.updateCurrentHistory = async (req, res) => {
+exports.update = async (req, res) => {
   try {
+    const existing = await currentHistoryServices.getCurrentHistoryById(
+      req.params.id,
+    );
+
+    await archivedHistoryServices.createArchivedHistory(existing);
+
     const updatedCurrentHistory =
       await currentHistoryServices.updateCurrentHistory(
         req.params.id,
         req.body,
       );
-
     res.status(200).json({
-      updatedCurrentHistory: updatedCurrentHistory,
+      updatedCurrentHistory,
       message: `ID: ${updatedCurrentHistory.id} has been successfully updated.`,
     });
   } catch (err) {
-    res.status(err.status || 500).json({
-      message: err.message || 'Internal server error.',
-    });
+    res
+      .status(err.status || 500)
+      .json({ message: err.message || 'Internal server error.' });
   }
 };
 
-exports.deleteCurrentHistory = async (req, res) => {
+exports.del = async (req, res) => {
   try {
     const deletedCurrentHistory =
       await currentHistoryServices.deleteCurrentHistory(req.params.id);
-
     res.status(200).json({
-      deletedCurrentHistory: deletedCurrentHistory,
+      deletedCurrentHistory,
       message: `ID: ${deletedCurrentHistory.id} was successfully deleted.`,
     });
   } catch (err) {

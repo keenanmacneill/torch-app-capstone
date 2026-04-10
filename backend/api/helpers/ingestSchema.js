@@ -8,7 +8,7 @@ const schema = {
     type: Number,
   },
   niin: {
-    column: 'Material / NIIN',
+    column: 'Material',
     type: String,
   },
   description: {
@@ -31,9 +31,13 @@ const schema = {
   },
   end_item_lin: {
     // change to real document header
-    column: 'END ITEM LIN',
+    column: 'End Item LIN',
     type: String,
   },
+  // cost: {
+  //   column: 'Cost',
+  //   type: Number
+  // }
 };
 
 module.exports = { schema };
