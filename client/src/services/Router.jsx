@@ -28,7 +28,7 @@ export default function MainRouter({ mode, onToggleTheme }) {
                     <Route path="/Ingest" element={<Ingest />} />
                     <Route path="/equipment" element={<EquipmentPage />} />
                     <Route
-                      path="/equipment/sub-hand-receipt"
+                      path="/equipment/shr-viewer"
                       element={<SHRViewPage />}
                     />
                     <Route
