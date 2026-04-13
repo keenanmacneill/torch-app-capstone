@@ -19,6 +19,7 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import SaveIcon from "@mui/icons-material/Save";
 import PdfModalViewer from "../components/PdfModalViewer";
 import { getEndItemById, updateEndItemNotes } from "../api/endItems";
+import PdfGenerator from "../components/PdfGenerator";
 
 export default function EndItemPage() {
   const { id } = useParams();
@@ -156,14 +157,18 @@ export default function EndItemPage() {
                     alignItems="stretch"
                 >
                   <Stack spacing={2} sx={{ flex: 1.2 }}>
-                    <Button
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <Button
                         variant="outlined"
                         startIcon={<PictureAsPdfIcon />}
                         onClick={() => setOpenPdf(true)}
                         sx={{ alignSelf: "flex-start" }}
-                    >
-                      Open End Item BOM PDF
-                    </Button>
+                      >
+                        Open End Item BOM PDF
+                      </Button>
+
+                      <PdfGenerator />
+                  </Stack>
 
                     <Card variant="outlined">
                       <CardContent>
