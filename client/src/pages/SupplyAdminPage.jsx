@@ -28,6 +28,7 @@ export default function SupplyAdminPage() {
     }
   }, [user]);
 
+
   useEffect(() => {
     if (!isAdmin) return;
 
@@ -47,13 +48,8 @@ export default function SupplyAdminPage() {
 
   if (authLoading) {
     return (
-      <Box sx={{ mx: 'auto', width: '100%', py: 4 }}>
-        <Stack
-          spacing={2}
-          alignItems="center"
-          justifyContent="center"
-          sx={{ minHeight: '60vh' }}
-        >
+      <Box sx={{ maxWidth: 1500, mx: 'auto', width: '100%', py: 4 }}>
+        <Stack spacing={2} alignItems="center" justifyContent="center" sx={{ minHeight: '60vh' }}>
           <CircularProgress />
           <Typography>Loading Admin Console...</Typography>
         </Stack>
@@ -62,12 +58,9 @@ export default function SupplyAdminPage() {
   }
 
   return (
-    <Box sx={{ mx: 'auto', width: '100%' }}>
+    <Box sx={{ maxWidth: 1500, mx: 'auto', width: '100%' }}>
       <Stack spacing={3}>
-        <Card
-          elevation={0}
-          sx={{ borderRadius: 4, border: '1px solid', borderColor: 'divider' }}
-        >
+        <Card elevation={0} sx={{ borderRadius: 4, border: '1px solid', borderColor: 'divider' }}>
           <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
             <Stack spacing={3}>
               <Stack
@@ -76,19 +69,15 @@ export default function SupplyAdminPage() {
                 alignItems={{ xs: 'flex-start', sm: 'center' }}
                 spacing={2}
               >
-                <Stack spacing={0.5}>
-                  <Typography
-                    variant="overline"
-                    color="primary"
-                    fontWeight={700}
-                  >
+                <Stack spacing={1}>
+                  <Typography variant="overline" color="primary" fontWeight={700}>
                     Admin Console
                   </Typography>
                   <Typography variant="h4" fontWeight={800}>
                     Supply Admin Dashboard
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    .CSV, .XLSX, or .XLS files only
+                  <Typography variant="body1" color="text.secondary">
+                    Upload CSV, XLSX, or XLS files to ingest end items or components.
                   </Typography>
                 </Stack>
 
