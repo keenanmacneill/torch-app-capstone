@@ -2,10 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>client</title>
-    <script type="module" crossorigin src="/assets/index-BVGfWD0D.js"></script>
+    <title>Civil Knowledge Integration Platform</title>
+    <script>
+      (function () {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
+        }
+        var search = location.search;
+        if (search) {
+          var p = new URLSearchParams(search).get('p');
+          if (p) {
+            var query = new URLSearchParams(search).get('q');
+            history.replaceState(
+              null,
+              null,
+              '/ckip' +
+                p.replace(/~and~/g, '&') +
+                (query ? '?' + query.replace(/~and~/g, '&') : '') +
+                location.hash,
+            );
+          }
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-DY-tnvpW.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-rptWOpCb.css">
   </head>
   <body>
