@@ -3,10 +3,10 @@ import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/torch-app-capstone/',
+  plugins: [react()],
   server: {
     host: true,
-    plugins: [react()],
-    base: '/torch-app-capstone/',
     watch: {
       usePolling: true,
     },
