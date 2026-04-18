@@ -63,7 +63,7 @@ export default function SplashPage() {
       setRegisterError('');
       setIsLogin(true);
       setRegisterOk(true);
-    } catch (err) {
+    } catch {
       setRegisterError('Something went wrong, please try again!');
     }
   };

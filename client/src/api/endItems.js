@@ -1,7 +1,7 @@
 const VITE_API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
 
 export async function getEndItemById(id) {
-  const response = await fetch(`${BASE_URL}/end-items/${id}`, {
+  const response = await fetch(`${VITE_API_URL}/end-items/${id}`, {
     credentials: 'include',
   });
 
@@ -13,7 +13,7 @@ export async function getEndItemById(id) {
 }
 
 export async function updateEndItemNotes(id, note) {
-  const response = await fetch(`${BASE_URL}/serial-items/${id}`, {
+  const response = await fetch(`${VITE_API_URL}/serial-items/${id}`, {
     method: 'PATCH',
     credentials: 'include',
     headers: {
@@ -32,7 +32,7 @@ export async function updateEndItemNotes(id, note) {
 
 export async function getEndItemSeenStatus(serialEndItemId) {
   const response = await fetch(
-    `${BASE_URL}/current-history/end-items/${serialEndItemId}`,
+    `${VITE_API_URL}/current-history/end-items/${serialEndItemId}`,
     {
       credentials: 'include',
     },
@@ -48,7 +48,7 @@ export async function getEndItemSeenStatus(serialEndItemId) {
 
 export async function getEndItemHistoryBySerial(serial_number) {
   const response = await fetch(
-    `${BASE_URL}/current-history/end-items/serial/${serial_number}`,
+    `${VITE_API_URL}/current-history/end-items/serial/${serial_number}`,
     {
       credentials: 'include',
     },
@@ -64,7 +64,7 @@ export async function getEndItemHistoryBySerial(serial_number) {
 
 export async function getEndItemHistoryBySerialId(serial_number) {
   const response = await fetch(
-    `${BASE_URL}/current-history/end-items/serialid/${serial_number}`,
+    `${VITE_API_URL}/current-history/end-items/serialid/${serial_number}`,
     {
       credentials: 'include',
     },
@@ -83,7 +83,7 @@ export async function getEndItemHistoryBySerialId(serial_number) {
 }
 
 export async function getEndItemCurrentHistory() {
-  const response = await fetch(`${BASE_URL}/current-history/end-items/`, {
+  const response = await fetch(`${VITE_API_URL}/current-history/end-items/`, {
     credentials: 'include',
   });
 
@@ -103,7 +103,7 @@ export async function postEndItemSeen(
   end_item_id,
   serial_number,
 ) {
-  const response = await fetch(`${BASE_URL}/current-history/end-items`, {
+  const response = await fetch(`${VITE_API_URL}/current-history/end-items`, {
     method: 'POST',
     credentials: 'include',
     headers: {
