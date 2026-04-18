@@ -4,7 +4,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
 
 export const tryGetEndItems = async () => {
   try {
-    const res = await fetch(`${API_URL}/end-items`, {
+    const res = await fetch(`${VITE_API_URL}/end-items`, {
       method: 'GET',
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       credentials: 'include',
@@ -24,7 +24,7 @@ export const tryGetEndItems = async () => {
 
 export const tryGetSerialItems = async () => {
   try {
-    const res = await fetch(`${API_URL}/serial-items`, {
+    const res = await fetch(`${VITE_API_URL}/serial-items`, {
       method: 'GET',
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       credentials: 'include',
@@ -44,7 +44,7 @@ export const tryGetSerialItems = async () => {
 
 export const tryGetSerialComponents = async () => {
   try {
-    const res = await fetch(`${API_URL}/serial-components`, {
+    const res = await fetch(`${VITE_API_URL}/serial-components`, {
       method: 'GET',
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       credentials: 'include',
@@ -64,7 +64,7 @@ export const tryGetSerialComponents = async () => {
 
 export const tryGetComponents = async () => {
   try {
-    const res = await fetch(`${API_URL}/components`, {
+    const res = await fetch(`${VITE_API_URL}/components`, {
       method: 'GET',
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       credentials: 'include',
@@ -86,7 +86,7 @@ export const tryGetComponents = async () => {
 
 export const tryGetHistoryComponent = async () => {
   try {
-    const res = await fetch(`${API_URL}/current-history/components`, {
+    const res = await fetch(`${VITE_API_URL}/current-history/components`, {
       method: 'GET',
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       credentials: 'include',
@@ -106,7 +106,7 @@ export const tryGetHistoryComponent = async () => {
 
 export const tryGetHistoryComponentArchive = async () => {
   try {
-    const res = await fetch(`${API_URL}/archived-history/components`, {
+    const res = await fetch(`${VITE_API_URL}/archived-history/components`, {
       method: 'GET',
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       credentials: 'include',
@@ -128,7 +128,7 @@ export const tryGetHistoryComponentArchive = async () => {
 
 export const tryGetHistoryEndItems = async () => {
   try {
-    const res = await fetch(`${API_URL}/current-history/end-items`, {
+    const res = await fetch(`${VITE_API_URL}/current-history/end-items`, {
       method: 'GET',
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       credentials: 'include',
@@ -148,7 +148,7 @@ export const tryGetHistoryEndItems = async () => {
 
 export const tryGetHistoryEndItemArchive = async () => {
   try {
-    const res = await fetch(`${API_URL}/archived-history/end-items`, {
+    const res = await fetch(`${VITE_API_URL}/archived-history/end-items`, {
       method: 'GET',
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       credentials: 'include',

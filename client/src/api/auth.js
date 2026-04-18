@@ -44,7 +44,7 @@ export const getCurrentUser = () => {
 
 export const tryLogin = async (email, password) => {
   try {
-    const res = await fetch(`${API_URL}/auth/login`, {
+    const res = await fetch(`${VITE_API_URL}/auth/login`, {
       method: 'POST',
       body: JSON.stringify({ email, password }),
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
