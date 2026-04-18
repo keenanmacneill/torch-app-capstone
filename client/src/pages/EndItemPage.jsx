@@ -166,7 +166,7 @@ export default function EndItemPage() {
           String(file).trim().toLowerCase().includes(currentLin),
         );
 
-        setPdfUrl(match ? `/pdfs/${match}` : null);
+        setPdfUrl(match ? `${import.meta.env.BASE_URL}pdfs/${match}` : null);
       })
       .catch(err => {
         console.error('PDF manifest error:', err);
@@ -293,7 +293,7 @@ export default function EndItemPage() {
   }
 
   const endItem = item.endItem;
-  const imageUrl = endItem.image || '/no_image_found_placeholder.png';
+  const imageUrl = endItem.image || `${import.meta.env.BASE_URL}no_image_found_placeholder.png`;
 
   const cardSx = {
     elevation: 0,
@@ -742,7 +742,7 @@ export default function EndItemPage() {
       <PdfFillModal
         open={openFillModal}
         onClose={() => setOpenFillModal(false)}
-        templateUrl="/templates/2062MainTemplate.pdf"
+        templateUrl={`${import.meta.env.BASE_URL}templates/2062MainTemplate.pdf`}
         onUpload={async pdf => {
           await savePdf({
             endItemId: id,

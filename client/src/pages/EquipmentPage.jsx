@@ -631,7 +631,7 @@ export default function EquipmentPage() {
       <PdfModalViewer
         open={openPdf}
         onClose={() => setOpenPdf(false)}
-        pdfUrl="/pdfs/WJQ1D0_Sub_Hand_Receipt_GOSPEL.pdf"
+        pdfUrl={`${import.meta.env.BASE_URL}pdfs/WJQ1D0_Sub_Hand_Receipt_GOSPEL.pdf`}
       />
 
       <Stack spacing={3}>

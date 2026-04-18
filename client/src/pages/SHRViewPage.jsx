@@ -66,7 +66,7 @@ export default function SHRViewPage() {
       >
         {/* IMPORTANT! This is hard-coded to a specific PDF; if we are going to do it by UIC it will need to be changed and probably the source will not be /Public */}
         <Document
-          file="/pdfs/1B10_SHR_flat.pdf"
+          file={`${import.meta.env.BASE_URL}pdfs/1B10_SHR_flat.pdf`}
           onLoadSuccess={onDocumentLoadSuccess}
         >
           <Page

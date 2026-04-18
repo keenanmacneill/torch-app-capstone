@@ -45,7 +45,7 @@ export default function SplashPage() {
   const [registerError, setRegisterError] = useState('');
   const handleRegisterSubmit = async data => {
     try {
-      const res = await fetch(`${url}auth/register`, {
+      const res = await fetch(`${url}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -149,7 +149,7 @@ export default function SplashPage() {
         >
           <Box
             component="img"
-            src="/artwork/splash_torch_logo.png"
+            src={`${import.meta.env.BASE_URL}artwork/splash_torch_logo.png`}
             alt="TORCH"
             sx={{
               maxWidth: { xs: 160, md: 450 },
@@ -164,7 +164,7 @@ export default function SplashPage() {
 
       <Box
         component="img"
-        src="/artwork/org_banner.png"
+        src={`${import.meta.env.BASE_URL}artwork/org_banner.png`}
         alt="Dev Team"
         sx={{ maxWidth: '100%', maxHeight: '8vh', objectFit: 'contain' }}
       />

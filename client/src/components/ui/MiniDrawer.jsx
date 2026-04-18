@@ -242,7 +242,7 @@ export default function MiniDrawer({children, mode, onToggleTheme}) {
         <Box sx={{display: "flex"}}>
             <Box
                 component="img"
-                src="/artwork/ctrl_alpha_del_dev_logo.png"
+                src={`${import.meta.env.BASE_URL}artwork/ctrl_alpha_del_dev_logo.png`}
                 alt="Our Team's Logo"
                 sx={{
                     position: "fixed",
@@ -276,8 +276,8 @@ export default function MiniDrawer({children, mode, onToggleTheme}) {
                             component="img"
                             src={
                                 mode === "dark"
-                                    ? "/artwork/Header_Dark_Mode.png"
-                                    : "/artwork/Header_Light_Mode.png"
+                                    ? `${import.meta.env.BASE_URL}artwork/Header_Dark_Mode.png`
+                                    : `${import.meta.env.BASE_URL}artwork/Header_Light_Mode.png`
                             }
                             alt="TORCH"
                             sx={{
