@@ -18,7 +18,7 @@ const parseJsonSafely = async res => {
 
   try {
     return JSON.parse(text);
-  } catch (e) {
+  } catch {
     return {
       error: `Unexpected response from server (${res.status}).`,
       status: res.status,
