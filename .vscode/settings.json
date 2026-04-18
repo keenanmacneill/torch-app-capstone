@@ -1,0 +1,27 @@
+{
+  "jest.enable": true,
+  "jest.jestCommandLine": "backend/node_modules/.bin/jest",
+  "jest.rootPath": "backend",
+  "cSpell.words": [
+    "dodid",
+    "niin",
+    "officedocument",
+    "openxmlformats",
+    "spreadsheetml",
+    "uics"
+  ],
+  "sqltools.connections": [
+    {
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "db",
+      "database": "db",
+      "username": "postgres",
+      "password": "docker"
+    }
+  ],
+  "CodeGPT.apiKey": "OpenAI"
+}
