@@ -1704,6 +1704,11 @@ unserialized components). When provided, use the numeric FK ID from `serial_comp
 
 Bulk upload endpoints for importing property data from Excel files. Both require `hrh` role.
 
+Ensure your file headers match this format (case-insensitive):
+
+| LIN NUMBER / DODIC | FSC | MATERIAL | MATERIAL DESCRIPTION | STOCK | UNIT OF MEASURE | SERIAL NUMBER | END ITEM LIN (only for components) |
+| ------------------ | --- | -------- | -------------------- | ----- | --------------- | ------------- | ---------------------------------- |
+
 #### `POST /ingest/end-items` — HRH role required
 
 Upload an Excel file to bulk-import end items and their serial numbers.
