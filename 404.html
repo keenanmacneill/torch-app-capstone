@@ -9,9 +9,11 @@
           '//' +
           l.hostname +
           (l.port ? ':' + l.port : '') +
-          '/ckip/' +
+          '/torch-app-capstone/' +
           '?p=/' +
-          l.pathname.slice('/ckip/'.length).replace(/&/g, '~and~') +
+          l.pathname
+            .slice('/torch-app-capstone/'.length)
+            .replace(/&/g, '~and~') +
           (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
           l.hash,
       );
