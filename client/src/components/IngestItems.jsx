@@ -16,8 +16,10 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as XLSX from 'xlsx';
+
+const VITE_API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
 
 export default function IngestItems({ uic }) {
   const { uicId } = uic ?? {};
@@ -119,7 +121,7 @@ export default function IngestItems({ uic }) {
   };
 
   useEffect(() => {
-    fetch('http://localhost:8080/ingest/schema', {
+    fetch(`${VITE_API_URL}/ingest/schema`, {
       credentials: 'include',
     })
       .then(res => res.json())
@@ -138,8 +140,8 @@ export default function IngestItems({ uic }) {
 
     const endpoint =
       itemType === 'end-items'
-        ? `http://localhost:8080/ingest/end-items/${uicId}`
-        : `http://localhost:8080/ingest/components/${uicId}`;
+        ? `${VITE_API_URL}/ingest/end-items/${uicId}`
+        : `${VITE_API_URL}/ingest/components/${uicId}`;
 
     try {
       const response = await fetch(endpoint, {
@@ -161,7 +163,7 @@ export default function IngestItems({ uic }) {
   };
 
   return (
-    <Stack spacing={3} >
+    <Stack spacing={3}>
       <input
         style={{ display: 'none' }}
         type="file"

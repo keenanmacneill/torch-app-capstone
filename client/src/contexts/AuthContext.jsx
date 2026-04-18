@@ -1,6 +1,8 @@
-import {createContext, useEffect, useState} from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 export const AuthContext = createContext();
+
+const VITE_API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -8,7 +10,7 @@ export function AuthProvider({ children }) {
 
   const fetchin = async () => {
     try {
-      const res = await fetch('http://localhost:8080/auth/me', {
+      const res = await fetch(`${VITE_API_URL}/auth/me`, {
         credentials: 'include',
       });
 
@@ -30,7 +32,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logoutFunc = async () => {
-    await fetch('http://localhost:8080/auth/logout', {
+    await fetch(`${VITE_API_URL}/auth/logout`, {
       method: 'POST',
       credentials: 'include',
     });

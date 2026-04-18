@@ -1,28 +1,28 @@
-import { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
-  InputAdornment,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   IconButton,
-  Stepper,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+  Stack,
   Step,
   StepLabel,
-  Checkbox,
-  FormGroup,
-  RadioGroup,
-  FormControlLabel,
-  FormLabel,
-  FormControl,
-  Stack,
+  Stepper,
   TextField,
-  Radio,
-  InputLabel,
-  Select,
-  MenuItem,
-  Menu,
   Tooltip,
 } from '@mui/material';
-import { Visibility } from '@mui/icons-material';
-import { VisibilityOff } from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
+
+const VITE_API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
 
 export default function RegisterForm({ onSubmit, error }) {
   //Form for form data (trying something new)
@@ -133,18 +133,18 @@ export default function RegisterForm({ onSubmit, error }) {
 
   //next and back buttons
   const handleNext = () => {
-    if (validateStep()) setActiveStep((prev) => prev + 1);
+    if (validateStep()) setActiveStep(prev => prev + 1);
   };
   const handleBack = () => {
     setIsValid(true);
-    setActiveStep((prev) => prev - 1);
+    setActiveStep(prev => prev - 1);
   };
 
   //role modification
   const [accountType, setAccountType] = useState('user');
   const [roles, setRoles] = useState([]);
 
-  const handleAccountTypeChange = (e) => {
+  const handleAccountTypeChange = e => {
     const value = e.target.value;
     setAccountType(value);
 
@@ -160,16 +160,16 @@ export default function RegisterForm({ onSubmit, error }) {
     validateStep();
   }, [form, roles, activeStep]);
 
-  const handleRoleChange = (e) => {
+  const handleRoleChange = e => {
     const { value, checked } = e.target;
 
     if (accountType === 'admin') return;
 
-    setRoles((prev) => {
+    setRoles(prev => {
       if (checked) {
         return [...prev, value];
       } else {
-        return prev.filter((r) => r !== value);
+        return prev.filter(r => r !== value);
       }
     });
   };
@@ -178,7 +178,7 @@ export default function RegisterForm({ onSubmit, error }) {
   const [localError, setLocalError] = useState('');
 
   //Handle regular change (not uic and role)
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
 
     setForm({
@@ -191,12 +191,12 @@ export default function RegisterForm({ onSubmit, error }) {
   };
 
   //Handle overall submit
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     //Validate all filled
     const { confirmPass, ...rest } = form;
-    if (Object.values(rest).some((v) => !v)) {
+    if (Object.values(rest).some(v => !v)) {
       return setLocalError('All fields are required!');
     }
 
@@ -222,7 +222,7 @@ export default function RegisterForm({ onSubmit, error }) {
   };
 
   //Handle the UIC change
-  const handleUicChange = (e) => {
+  const handleUicChange = e => {
     setForm({
       ...form,
       uic: e.target.value,
@@ -235,7 +235,7 @@ export default function RegisterForm({ onSubmit, error }) {
   useEffect(() => {
     const fetchUics = async () => {
       try {
-        const res = await fetch('http://localhost:8080/uics');
+        const res = await fetch(`${VITE_API_URL}/uics`);
         const data = await res.json();
         setUics(data.allUics);
       } catch {
@@ -289,7 +289,7 @@ export default function RegisterForm({ onSubmit, error }) {
   ];
 
   const [rankType, setRankType] = useState('');
-  const handleRankTypeChange = (e) => {
+  const handleRankTypeChange = e => {
     const value = e.target.value;
     setRankType(value);
   };
@@ -303,7 +303,7 @@ export default function RegisterForm({ onSubmit, error }) {
       <Stack spacing={3} sx={{ width: 400 }}>
         {/*Steppin it*/}
         <Stepper activeStep={activeStep}>
-          {steps.map((label) => (
+          {steps.map(label => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
             </Step>
@@ -334,8 +334,8 @@ export default function RegisterForm({ onSubmit, error }) {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => setShowPassword(prev => !prev)}
+                      onMouseDown={e => e.preventDefault()}
                       edge="end"
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -357,8 +357,8 @@ export default function RegisterForm({ onSubmit, error }) {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => setShowConfirmPass((prev) => !prev)}
-                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => setShowConfirmPass(prev => !prev)}
+                      onMouseDown={e => e.preventDefault()}
                       edge="end"
                     >
                       {showConfirmPass ? <VisibilityOff /> : <Visibility />}
@@ -466,25 +466,25 @@ export default function RegisterForm({ onSubmit, error }) {
                 fullWidth
               >
                 {rankType === 'enlisted' &&
-                  enlistedRanks.map((r) => (
+                  enlistedRanks.map(r => (
                     <MenuItem key={r} value={r}>
                       {r}
                     </MenuItem>
                   ))}
                 {rankType === 'officer' &&
-                  officerRanks.map((r) => (
+                  officerRanks.map(r => (
                     <MenuItem key={r} value={r}>
                       {r}
                     </MenuItem>
                   ))}
                 {rankType === 'warrant' &&
-                  warrantRanks.map((r) => (
+                  warrantRanks.map(r => (
                     <MenuItem key={r} value={r}>
                       {r}
                     </MenuItem>
                   ))}
                 {rankType === 'civilian' &&
-                  civilianRanks.map((r) => (
+                  civilianRanks.map(r => (
                     <MenuItem key={r} value={r}>
                       {r}
                     </MenuItem>
@@ -553,7 +553,7 @@ export default function RegisterForm({ onSubmit, error }) {
               <FormControl fullWidth>
                 <InputLabel>UIC</InputLabel>
                 <Select required value={form.uic} onChange={handleUicChange}>
-                  {uics.map((uic) => (
+                  {uics.map(uic => (
                     <MenuItem key={uic.uic} value={uic.uic}>
                       {uic.uic}
                     </MenuItem>

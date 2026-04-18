@@ -12,9 +12,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import IngestItems from '../components/IngestItems.jsx';
-import {useAuth} from '../hooks/useAuth.jsx';
+import { useAuth } from '../hooks/useAuth.jsx';
+
+const url = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
 
 export default function SupplyAdminPage() {
   const { user, loading: authLoading } = useAuth();
@@ -31,7 +33,7 @@ export default function SupplyAdminPage() {
   useEffect(() => {
     if (!isAdmin) return;
 
-    fetch('http://localhost:8080/uics', { credentials: 'include' })
+    fetch(`${url}/uics`, { credentials: 'include' })
       .then(res => res.json())
       .then(data =>
         setUics(data.allUics.map(i => ({ uicId: i.id, uicName: i.uic }))),
@@ -62,7 +64,7 @@ export default function SupplyAdminPage() {
   }
 
   return (
-    <Box sx={{maxWidth: 1500, mx: 'auto', width: '100%'}}>
+    <Box sx={{ maxWidth: 1500, mx: 'auto', width: '100%' }}>
       <Stack spacing={3}>
         <Card
           elevation={0}
@@ -78,7 +80,9 @@ export default function SupplyAdminPage() {
               >
                 <Stack spacing={1}>
                   <Typography
-                      variant="overline" color="primary" fontWeight={700}
+                    variant="overline"
+                    color="primary"
+                    fontWeight={700}
                   >
                     Admin Console
                   </Typography>

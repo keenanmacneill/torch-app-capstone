@@ -17,25 +17,29 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+
+import {
+  getEndItemById,
+  getEndItemHistoryBySerialId,
+  updateEndItemNotes,
+} from '../api/endItems';
+
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import SaveIcon from '@mui/icons-material/Save';
-import PdfModalViewer from '../components/PdfModalViewer';
-import {
-  getEndItemById,
-  updateEndItemNotes,
-  getEndItemHistoryBySerialId,
-} from '../api/endItems';
-import PdfGenerator from '../components/PdfGenerator';
-import { deletePdf, getPdfsByEndItem, savePdf } from '../utils/pdfStorage';
-import PdfFillModal from '../components/PdfFillModal';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { tryGetSerialItems } from '../api/data.js';
 import { postEndItemSeen } from '../api/endItems.js';
-import DeleteIcon from '@mui/icons-material/Delete';
+import PdfFillModal from '../components/PdfFillModal';
+import PdfGenerator from '../components/PdfGenerator';
+import PdfModalViewer from '../components/PdfModalViewer';
+import { deletePdf, getPdfsByEndItem, savePdf } from '../utils/pdfStorage';
+
+const VITE_API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080';
 
 export default function EndItemPage() {
   const { id } = useParams();
@@ -67,14 +71,14 @@ export default function EndItemPage() {
   const { data: serialEndItemsData = [] } = useQuery({
     queryKey: ['serialEndItems'],
     queryFn: tryGetSerialItems,
-    select: (d) => d.allSerialEndItems ?? [],
+    select: d => d.allSerialEndItems ?? [],
   });
 
   const matchingSerialItems = serialEndItemsData.filter(
-    (serialItem) => Number(serialItem.end_item_id) === Number(id),
+    serialItem => Number(serialItem.end_item_id) === Number(id),
   );
   const selectedSerial = matchingSerialItems.find(
-    (serialItem) => String(serialItem.id) === String(selectedSerialId),
+    serialItem => String(serialItem.id) === String(selectedSerialId),
   );
 
   useEffect(() => {
@@ -84,7 +88,7 @@ export default function EndItemPage() {
   const loadPdfs = async () => {
     try {
       const results = await getPdfsByEndItem(id);
-      const withUrls = results.map((pdf) => ({
+      const withUrls = results.map(pdf => ({
         ...pdf,
         url: URL.createObjectURL(pdf.blob),
       }));
@@ -96,17 +100,17 @@ export default function EndItemPage() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:8080/auth/me', { credentials: 'include' })
-      .then((res) => res.json())
-      .then((data) => setUic(data.user?.uic ?? ''))
-      .catch((err) => console.error('Failed to load user:', err));
+    fetch(`${VITE_API_URL}/auth/me`, { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => setUic(data.user?.uic ?? ''))
+      .catch(err => console.error('Failed to load user:', err));
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:8080/auth/me', { credentials: 'include' })
-      .then((res) => res.json())
-      .then((data) => setCurrUser(data.user ?? null))
-      .catch((err) => console.error('Failed to load user:', err));
+    fetch(`${VITE_API_URL}/auth/me`, { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => setCurrUser(data.user ?? null))
+      .catch(err => console.error('Failed to load user:', err));
   }, []);
 
   useEffect(() => {
@@ -151,20 +155,20 @@ export default function EndItemPage() {
     const currentLin = String(item.endItem.lin).trim().toLowerCase();
 
     fetch('/pdfs/pdfManifest.json')
-      .then((res) => {
+      .then(res => {
         if (!res.ok) {
           throw new Error('Could not load PDF manifest');
         }
         return res.json();
       })
-      .then((files) => {
-        const match = files.find((file) =>
+      .then(files => {
+        const match = files.find(file =>
           String(file).trim().toLowerCase().includes(currentLin),
         );
 
         setPdfUrl(match ? `/pdfs/${match}` : null);
       })
-      .catch((err) => {
+      .catch(err => {
         console.error('PDF manifest error:', err);
         setPdfUrl(null);
       });
@@ -172,7 +176,7 @@ export default function EndItemPage() {
 
   useEffect(() => {
     return () => {
-      localPdfs.forEach((pdf) => {
+      localPdfs.forEach(pdf => {
         if (pdf.url) {
           URL.revokeObjectURL(pdf.url);
         }
@@ -189,7 +193,7 @@ export default function EndItemPage() {
         setSaveMessage('Notes saved.');
         setSavingNotes(false);
       })
-      .catch((err) => {
+      .catch(err => {
         console.error('Save error:', err);
         setSaveMessage('Could not save notes.');
         setSavingNotes(false);
@@ -203,32 +207,32 @@ export default function EndItemPage() {
       return;
     }
     getEndItemHistoryBySerialId(selectedSerialId)
-      .then((data) => {
+      .then(data => {
         setSeen(Boolean(data?.seen));
         setLastSeen(data?.last_seen ?? null);
       })
-      .catch((err) => console.error('Failed to load seen status:', err));
+      .catch(err => console.error('Failed to load seen status:', err));
   }, []);
 
   useEffect(() => {
     setLoading(true);
 
     fetch(
-      `http://localhost:8080/inventory/components/${id}?serid=${selectedSerialId}`,
+      `${VITE_API_URL}/inventory/components/${id}?serid=${selectedSerialId}`,
       {
         credentials: 'include',
       },
     )
-      .then((res) => {
+      .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}`);
         }
         return res.json();
       })
-      .then((data) => {
+      .then(data => {
         const components = Array.isArray(data) ? data : [];
 
-        const mappedItems = components.map((item) => ({
+        const mappedItems = components.map(item => ({
           serial_id: selectedSerialId,
           complete: item.seen || false,
           component_id: item.id,
@@ -243,13 +247,13 @@ export default function EndItemPage() {
         }));
 
         const filteredMappedItems = mappedItems.filter(
-          (item) => item.complete === false,
+          item => item.complete === false,
         );
 
         setFilteredItems(filteredMappedItems);
         setItems(mappedItems);
       })
-      .catch((err) => {
+      .catch(err => {
         console.error('Failed to fetch inventory:', err);
         setItems([]);
       })
@@ -585,7 +589,7 @@ export default function EndItemPage() {
                   minRows={6}
                   fullWidth
                   value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
+                  onChange={e => setNotes(e.target.value)}
                   placeholder="Add notes for this end item..."
                 />
 
@@ -670,7 +674,7 @@ export default function EndItemPage() {
                     </Typography>
                   ) : (
                     <Stack spacing={1}>
-                      {localPdfs.map((pdf) => (
+                      {localPdfs.map(pdf => (
                         <Box
                           key={pdf.id}
                           sx={{
@@ -697,7 +701,7 @@ export default function EndItemPage() {
                           <IconButton
                             color="error"
                             size="small"
-                            onClick={async (e) => {
+                            onClick={async e => {
                               e.stopPropagation();
                               await deletePdf(pdf.id);
                               loadPdfs();
@@ -739,7 +743,7 @@ export default function EndItemPage() {
         open={openFillModal}
         onClose={() => setOpenFillModal(false)}
         templateUrl="/templates/2062MainTemplate.pdf"
-        onUpload={async (pdf) => {
+        onUpload={async pdf => {
           await savePdf({
             endItemId: id,
             name: pdf.name,

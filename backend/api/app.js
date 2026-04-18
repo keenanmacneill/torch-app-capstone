@@ -8,9 +8,10 @@ const app = express();
 // Frontend team: allowed origins for CORS.
 // In development the Vite dev server runs on port 5173.
 // Set CLIENT_URL in your .env to allow your production frontend origin.
-const allowedOrigins = ['http://localhost:5173', process.env.CLIENT_URL].filter(
-  Boolean,
-);
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.CLIENT_URLS,
+].filter(Boolean);
 
 app.use(express.json());
 app.use(cookieParser(process.env.JWT));
@@ -43,7 +44,7 @@ const currentHistoryEndItemsRoutes = require('./routes/currentHistoryEndItemsRou
 const currentHistoryComponentsRoutes = require('./routes/currentHistoryComponentsRoutes');
 const archivedHistoryEndItemsRoutes = require('./routes/archivedHistoryEndItemsRoutes');
 const archivedHistoryComponentsRoutes = require('./routes/archivedHistoryComponentsRoutes');
-const inventoryRoutes = require('./routes/inventoryRoutes.js')
+const inventoryRoutes = require('./routes/inventoryRoutes.js');
 
 app.use('/auth', authRoutes);
 app.use('/uics', uicsRoutes);
