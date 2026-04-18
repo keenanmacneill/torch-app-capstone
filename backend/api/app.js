@@ -10,8 +10,8 @@ const app = express();
 // Set CLIENT_URL in your .env to allow your production frontend origin.
 const allowedOrigins = [
   'http://localhost:5173',
-  process.env.CLIENT_URLS,
-].filter(Boolean);
+  ...(process.env.CLIENT_URLS ? process.env.CLIENT_URLS.split(',') : []),
+];
 
 app.use(express.json());
 app.use(cookieParser(process.env.JWT));
