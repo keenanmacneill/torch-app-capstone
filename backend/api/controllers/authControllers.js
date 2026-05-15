@@ -1,4 +1,4 @@
-const authServices = require('../services/authServices');
+const authServices = require("../services/authServices");
 
 exports.getMe = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ exports.getMe = async (req, res) => {
     res.status(200).json({ user });
   } catch (err) {
     res.status(err.status || 500).json({
-      message: err.message || 'Internal server error.',
+      message: err.message || "Internal server error.",
     });
   }
 };
@@ -22,7 +22,7 @@ exports.registerUser = async (req, res) => {
     });
   } catch (err) {
     res.status(err.status || 500).json({
-      message: err.message || 'Internal server error.',
+      message: err.message || "Internal server error.",
     });
   }
 };
@@ -33,30 +33,31 @@ exports.login = async (req, res) => {
 
     const token = await authServices.login(email, password);
 
-    res.cookie('token', token, {
+    res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     return res.status(200).json({ token });
   } catch (err) {
+    console.log("LOGIN ERROR:", err);
     res.status(err.status || 500).json({
-      message: err.message || 'Internal server error.',
+      message: err.message || "Internal server error.",
     });
   }
 };
 
 exports.logout = (req, res) => {
   try {
-    res.clearCookie('token', {
+    res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
-    return res.status(200).json({ message: 'Logged out.' });
+    return res.status(200).json({ message: "Logged out." });
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error.' });
+    res.status(500).json({ message: "Internal server error." });
   }
 };
