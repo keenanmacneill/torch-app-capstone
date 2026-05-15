@@ -18,7 +18,10 @@ app.use(cookieParser(process.env.JWT));
 
 // CORS configuration — credentials: true is required so the browser sends
 // the httpOnly cookie on cross-origin requests (e.g. Vite → Express)
-console.log("Allowed origins:", allowedOrigins);
+console.log("DB_HOST:", process.env.DB_HOST);
+console.log("DB_USER:", process.env.DB_USER);
+console.log("DB_NAME:", process.env.DB_NAME);
+console.log("JWT:", process.env.JWT);
 
 app.use(
   cors({
