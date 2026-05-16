@@ -63,14 +63,15 @@ app.use("/archived-history/components", auth, archivedHistoryComponentsRoutes);
 
 app.get("/__run_migrations_once", async (req, res) => {
   try {
-    const knex = require("knex")(
-      require("../db/knexfile.js")[process.env.NODE_ENV],
-    );
+    const knexConfig = require("../db/knexfile.js")[process.env.NODE_ENV];
+    const knex = require("knex")(knexConfig);
+
     await knex.migrate.latest();
     await knex.seed.run();
+
     res.send("Migrations + seeds complete");
   } catch (err) {
-    console.error(err);
+    console.error("MIGRATION ERROR:", err);
     res.status(500).send(err.message);
   }
 });
