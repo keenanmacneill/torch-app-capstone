@@ -1,7 +1,11 @@
-require('dotenv').config();
+const path = require("path");
+require("dotenv").config();
 
 const connection = process.env.DATABASE_URL
-  ? { connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } }
+  ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    }
   : {
       host: process.env.POSTGRES_HOST,
       port: process.env.POSTGRES_PORT,
@@ -12,11 +16,23 @@ const connection = process.env.DATABASE_URL
 
 module.exports = {
   development: {
-    client: 'pg',
+    client: "pg",
     connection,
+    migrations: {
+      directory: path.join(__dirname, "migrations"),
+    },
+    seeds: {
+      directory: path.join(__dirname, "seeds"),
+    },
   },
   production: {
-    client: 'pg',
+    client: "pg",
     connection,
+    migrations: {
+      directory: path.join(__dirname, "migrations"),
+    },
+    seeds: {
+      directory: path.join(__dirname, "seeds"),
+    },
   },
 };
