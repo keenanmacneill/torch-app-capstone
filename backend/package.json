@@ -4,7 +4,7 @@
   "description": "",
   "main": "api/server.js",
   "scripts": {
-    "start": "node api/server.js",
+    "start": "node backend/api/server.js",
     "migrate": "npx knex --knexfile db/knexfile.js migrate:latest",
     "rollback": "npx knex --knexfile db/knexfile.js migrate:rollback",
     "seed": "npx knex --knexfile db/knexfile.js seed:run",
