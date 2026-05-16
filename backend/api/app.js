@@ -66,18 +66,21 @@ app.get("/__reset", async (req, res) => {
     const knexConfig = require("../db/knexfile.js")[process.env.NODE_ENV];
     const knex = require("knex")(knexConfig);
 
-    // Roll back ALL batches, not just the last one
-    await knex.migrate.rollback(null, true);
+    // Disable FK checks
+    await knex.raw("SET session_replication_role = 'replica'");
 
-    // Re-run all migrations
-    await knex.migrate.latest();
+    // Truncate only the ingestion-related tables
+    await knex.raw(`TRUNCATE TABLE end_items RESTART IDENTITY CASCADE`);
+    await knex.raw(`TRUNCATE TABLE components RESTART IDENTITY CASCADE`);
+    await knex.raw(`TRUNCATE TABLE serial_end_items RESTART IDENTITY CASCADE`);
+    await knex.raw(`TRUNCATE TABLE serial_components RESTART IDENTITY CASCADE`);
 
-    // Re-run seeds
-    await knex.seed.run();
+    // Re-enable FK checks
+    await knex.raw("SET session_replication_role = 'origin'");
 
-    res.send("Database reset, migrations re-applied, seeds reloaded");
+    res.send("Ingestion tables truncated — ready for fresh ingest");
   } catch (err) {
-    console.error("RESET ERROR:", err);
+    console.error("TRUNCATE ERROR:", err);
     res.status(500).send(err.message);
   }
 });
