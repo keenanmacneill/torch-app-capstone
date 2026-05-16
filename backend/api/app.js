@@ -64,7 +64,7 @@ app.use("/archived-history/components", auth, archivedHistoryComponentsRoutes);
 app.get("/__run_migrations_once", async (req, res) => {
   try {
     const knex = require("knex")(
-      require("./db/knexfile")[process.env.NODE_ENV],
+      require("../db/knexfile.js")[process.env.NODE_ENV],
     );
     await knex.migrate.latest();
     await knex.seed.run();
