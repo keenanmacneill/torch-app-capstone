@@ -61,26 +61,17 @@ app.use("/current-history/components", auth, currentHistoryComponentsRoutes);
 app.use("/archived-history/end-items", auth, archivedHistoryEndItemsRoutes);
 app.use("/archived-history/components", auth, archivedHistoryComponentsRoutes);
 
-app.get("/__reset", async (req, res) => {
+app.get("/__run_migrations", async (req, res) => {
   try {
     const knexConfig = require("../db/knexfile.js")[process.env.NODE_ENV];
     const knex = require("knex")(knexConfig);
 
-    // Disable FK checks
-    await knex.raw("SET session_replication_role = 'replica'");
+    await knex.migrate.latest();
+    await knex.seed.run();
 
-    // Truncate only the ingestion-related tables
-    await knex.raw(`TRUNCATE TABLE end_items RESTART IDENTITY CASCADE`);
-    await knex.raw(`TRUNCATE TABLE components RESTART IDENTITY CASCADE`);
-    await knex.raw(`TRUNCATE TABLE serial_end_items RESTART IDENTITY CASCADE`);
-    await knex.raw(`TRUNCATE TABLE serial_components RESTART IDENTITY CASCADE`);
-
-    // Re-enable FK checks
-    await knex.raw("SET session_replication_role = 'origin'");
-
-    res.send("Ingestion tables truncated — ready for fresh ingest");
+    res.send("Migrations + seeds complete");
   } catch (err) {
-    console.error("TRUNCATE ERROR:", err);
+    console.error("MIGRATION ERROR:", err);
     res.status(500).send(err.message);
   }
 });
