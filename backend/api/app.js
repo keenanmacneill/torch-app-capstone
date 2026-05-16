@@ -61,11 +61,12 @@ app.use("/current-history/components", auth, currentHistoryComponentsRoutes);
 app.use("/archived-history/end-items", auth, archivedHistoryEndItemsRoutes);
 app.use("/archived-history/components", auth, archivedHistoryComponentsRoutes);
 
-app.get("/__run_migrations_once", async (req, res) => {
+app.get("/__reset", async (req, res) => {
   try {
     const knexConfig = require("../db/knexfile.js")[process.env.NODE_ENV];
     const knex = require("knex")(knexConfig);
 
+    await knex.migrate.rollback();
     await knex.migrate.latest();
     await knex.seed.run();
 
