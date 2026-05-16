@@ -2,7 +2,7 @@
 FROM node:20-alpine
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /app/backend
 
 # Copy dependency files first (improves layer caching)
 COPY package*.json ./
