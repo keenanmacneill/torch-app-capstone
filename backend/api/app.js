@@ -66,13 +66,18 @@ app.get("/__reset", async (req, res) => {
     const knexConfig = require("../db/knexfile.js")[process.env.NODE_ENV];
     const knex = require("knex")(knexConfig);
 
-    await knex.migrate.rollback();
+    // Roll back ALL batches, not just the last one
+    await knex.migrate.rollback(null, true);
+
+    // Re-run all migrations
     await knex.migrate.latest();
+
+    // Re-run seeds
     await knex.seed.run();
 
-    res.send("Migrations + seeds complete");
+    res.send("Database reset, migrations re-applied, seeds reloaded");
   } catch (err) {
-    console.error("MIGRATION ERROR:", err);
+    console.error("RESET ERROR:", err);
     res.status(500).send(err.message);
   }
 });
