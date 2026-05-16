@@ -76,6 +76,32 @@ app.get("/__run_migrations", async (req, res) => {
   }
 });
 
+app.get("/__truncate_ingest", async (req, res) => {
+  try {
+    const knexConfig = require("../db/knexfile.js")[process.env.NODE_ENV];
+    const knex = require("knex")(knexConfig);
+
+    // Disable FK checks
+    await knex.raw("SET session_replication_role = 'replica';");
+
+    // IMPORTANT: use the exact table names from pg_tables
+    await knex.raw(`TRUNCATE TABLE end_items RESTART IDENTITY CASCADE;`);
+    await knex.raw(`TRUNCATE TABLE components RESTART IDENTITY CASCADE;`);
+    await knex.raw(`TRUNCATE TABLE serial_end_items RESTART IDENTITY CASCADE;`);
+    await knex.raw(
+      `TRUNCATE TABLE serial_components RESTART IDENTITY CASCADE;`,
+    );
+
+    // Re-enable FK checks
+    await knex.raw("SET session_replication_role = 'origin';");
+
+    res.send("Ingestion tables truncated");
+  } catch (err) {
+    console.error("TRUNCATE ERROR:", err);
+    res.status(500).send(err.message);
+  }
+});
+
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Working for now..." });
 });
