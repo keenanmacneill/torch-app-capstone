@@ -61,6 +61,20 @@ app.use("/current-history/components", auth, currentHistoryComponentsRoutes);
 app.use("/archived-history/end-items", auth, archivedHistoryEndItemsRoutes);
 app.use("/archived-history/components", auth, archivedHistoryComponentsRoutes);
 
+app.get("/__run_migrations_once", async (req, res) => {
+  try {
+    const knex = require("knex")(
+      require("./db/knexfile")[process.env.NODE_ENV],
+    );
+    await knex.migrate.latest();
+    await knex.seed.run();
+    res.send("Migrations + seeds complete");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Working for now..." });
 });
